@@ -1,2 +1,3 @@
 /Include/ScriptCaller.class.mqh
 /Indicators/ScriptCallerTest.mq4
+/Libraries/ScriptCaller.dll
