@@ -13,6 +13,10 @@ public:
 
 private:
     static const wchar_t* NAVIGATOR_WINDOW_CLASS_NAME;
+    static const wchar_t* MT4_INTERNAL_MESSAGE;
+    static const UINT MT4_WPARAM_START_SCRIPT;
+
+    UINT m_mt4InternalMessage;
 
     HWND m_chartWindowHandle;
     HWND m_rootWindowHandle;
@@ -25,4 +29,5 @@ private:
     HWND findNavigatorTreeView();
     int findScriptOrdinal(const wchar_t* scriptName);
     bool findScriptOrdinal(const wchar_t* scriptName, HTREEITEM node, int& ordinal);
+    void callScript(int ordinal);
 };

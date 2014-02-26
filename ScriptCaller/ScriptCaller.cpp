@@ -9,13 +9,15 @@ ScriptCaller::ScriptCaller(HWND chartWindowHandle)
     m_rootWindowHandle(NULL),
     m_navigatorTreeViewHandle(NULL)
 {
-
+    m_mt4InternalMessage = RegisterWindowMessageW(MT4_INTERNAL_MESSAGE);
 }
 
 // --------------------------------------------------
 // private members
 
 const wchar_t* ScriptCaller::NAVIGATOR_WINDOW_CLASS_NAME = L"SysTreeView32";
+const wchar_t* ScriptCaller::MT4_INTERNAL_MESSAGE = L"MetaTrader4_Internal_Message";
+const UINT ScriptCaller::MT4_WPARAM_START_SCRIPT = 0x11;
 
 bool ScriptCaller::callScript(const wchar_t* scriptName)
 {
@@ -33,6 +35,8 @@ bool ScriptCaller::callScript(const wchar_t* scriptName)
     msg << "script name = " << scriptName
         << ", ordinal = " << scriptOrdinal;
     OutputDebugStringW(msg.str().c_str());
+
+    callScript(scriptOrdinal);
 
     return true;
 }
@@ -162,7 +166,7 @@ bool ScriptCaller::findScriptOrdinal(const wchar_t* scriptName, HTREEITEM node, 
                 << L", lParam = " << item.lParam
                 << L", i = " << i
                 << L", count = " << count
-                << L", ordinal = " << count + ordinal;
+                << L", ordinal = " << count + ordinal - 1;
 
             OutputDebugStringW(msg.str().c_str());
 
@@ -180,6 +184,7 @@ bool ScriptCaller::findScriptOrdinal(const wchar_t* scriptName, HTREEITEM node, 
                 count += 1;
 
                 if (wcscmp(item.pszText, scriptName) == 0) {
+                    count -= 1;
                     retval = true;
                     break;
                 }
@@ -194,4 +199,9 @@ bool ScriptCaller::findScriptOrdinal(const wchar_t* scriptName, HTREEITEM node, 
 
     ordinal += count;
     return retval;
+}
+
+void ScriptCaller::callScript(int ordinal)
+{
+    PostMessageW(m_chartWindowHandle, m_mt4InternalMessage, MT4_WPARAM_START_SCRIPT, ordinal);
 }
