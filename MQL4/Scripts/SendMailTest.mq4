@@ -6,4 +6,3 @@ void OnStart()
 {
     SendMail("Test", "From MT4");
 }
-

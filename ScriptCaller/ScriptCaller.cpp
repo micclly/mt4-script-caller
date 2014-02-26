@@ -11,3 +11,8 @@ ScriptCaller::ScriptCaller()
 
 // --------------------------------------------------
 // private members
+
+bool ScriptCaller::callScript(const wchar_t* scriptName)
+{
+    return true;
+}

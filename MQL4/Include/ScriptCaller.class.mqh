@@ -4,6 +4,7 @@
 
 #import "ScriptCaller.dll"
     int ScriptCaller_create();
+    int ScriptCaller_callScript(int handle, string scriptName);
     int ScriptCaller_destroy(int handle);
 #import
 
@@ -15,6 +16,8 @@ class ScriptCaller
 public:
     ScriptCaller();
     virtual ~ScriptCaller();
+
+    bool callScript(string scriptName);
 
 private:
     int m_handle;
@@ -34,6 +37,11 @@ ScriptCaller::~ScriptCaller()
     if (m_handle) {
         ScriptCaller_destroy(m_handle);
     }
+}
+
+bool ScriptCaller::callScript(string scriptName)
+{
+    return ScriptCaller_callScript(m_handle, scriptName);
 }
 
 // --------------------------------------------------

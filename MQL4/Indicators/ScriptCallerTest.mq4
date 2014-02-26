@@ -6,6 +6,7 @@
 #include <ScriptCaller.class.mqh>
 
 ScriptCaller* g_scriptCaller = NULL;
+bool g_mailSent = false;
 
 int OnInit()
 {
@@ -31,5 +32,9 @@ int OnCalculate(const int rates_total,
                 const long &volume[],
                 const int &spread[])
 {
+    if (!g_mailSent) {
+        g_scriptCaller.callScript("SendMailTest");
+    }
+
     return rates_total;
 }
