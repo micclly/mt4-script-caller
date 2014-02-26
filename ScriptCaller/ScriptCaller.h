@@ -1,5 +1,12 @@
-#ifdef SCRIPTCALLER_EXPORTS
-#define SCRIPTCALLER_API extern "C" __declspec(dllexport)
-#else
-#define SCRIPTCALLER_API extern "C" __declspec(dllimport)
-#endif
+#pragma once
+
+// --------------------------------------------------
+// class definition
+
+class ScriptCaller
+{
+public:
+    ScriptCaller();
+
+private:
+};
