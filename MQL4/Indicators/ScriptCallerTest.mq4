@@ -34,6 +34,7 @@ int OnCalculate(const int rates_total,
 {
     if (!g_mailSent) {
         g_scriptCaller.callScript("SendMailTest");
+        g_mailSent = true;
     }
 
     return rates_total;

@@ -7,17 +7,16 @@
 ScriptCaller::ScriptCaller(HWND chartWindowHandle)
 : m_chartWindowHandle(chartWindowHandle),
     m_rootWindowHandle(NULL),
-    m_navigatorTreeViewHandle(NULL)
+    m_navigatorTreeViewHandle(NULL),
+    m_debugLevel(0)
 {
     m_mt4InternalMessage = RegisterWindowMessageW(MT4_INTERNAL_MESSAGE);
 }
 
-// --------------------------------------------------
-// private members
-
-const wchar_t* ScriptCaller::NAVIGATOR_WINDOW_CLASS_NAME = L"SysTreeView32";
-const wchar_t* ScriptCaller::MT4_INTERNAL_MESSAGE = L"MetaTrader4_Internal_Message";
-const UINT ScriptCaller::MT4_WPARAM_START_SCRIPT = 0x11;
+void ScriptCaller::setDebugLevel(int level)
+{
+    m_debugLevel = level;
+}
 
 bool ScriptCaller::callScript(const wchar_t* scriptName)
 {
@@ -32,13 +31,25 @@ bool ScriptCaller::callScript(const wchar_t* scriptName)
     }
 
     std::wstringstream msg;
-    msg << "script name = " << scriptName
+    msg << "Calling script name = " << scriptName
         << ", ordinal = " << scriptOrdinal;
     OutputDebugStringW(msg.str().c_str());
 
     callScript(scriptOrdinal);
 
     return true;
+}
+
+// --------------------------------------------------
+// private members
+
+const wchar_t* ScriptCaller::NAVIGATOR_WINDOW_CLASS_NAME = L"SysTreeView32";
+const wchar_t* ScriptCaller::MT4_INTERNAL_MESSAGE = L"MetaTrader4_Internal_Message";
+const UINT ScriptCaller::MT4_WPARAM_START_SCRIPT = 0x11;
+
+bool ScriptCaller::isDebug(int level)
+{
+    return level <= m_debugLevel;
 }
 
 HWND ScriptCaller::getRootWindowHandle()
@@ -82,15 +93,16 @@ BOOL ScriptCaller::enumChildWindowCallback(HWND hwnd)
     wchar_t windowClass[1024];
     GetClassNameW(hwnd, windowClass, sizeof(windowClass));
 
-    std::wstringstream msg;
+    if (isDebug(2)) {
+        std::wstringstream msg;
+        msg << std::hex
+            << L"enumChildWindowCallback: "
+            << L"hwnd = 0x" << hwnd
+            << L", caption = " << windowCaption
+            << L", class = " << windowClass;
 
-    msg << std::hex
-        << L"enumChildWindowCallback: "
-        << L"hwnd = 0x" << hwnd
-        << L", caption = " << windowCaption
-        << L", class = " << windowClass;
-
-    OutputDebugStringW(msg.str().c_str());
+        OutputDebugStringW(msg.str().c_str());
+    }
 
     if (wcscmp(windowClass, NAVIGATOR_WINDOW_CLASS_NAME) == 0) {
         m_navigatorTreeViewHandle = hwnd;
@@ -148,7 +160,6 @@ bool ScriptCaller::findScriptOrdinal(const wchar_t* scriptName, HTREEITEM node, 
     int i = 0;
     int count = 0;
     bool retval = false;
-    std::wstringstream msg;
 
     while (true) {
         if (i > 0) {
@@ -160,15 +171,19 @@ bool ScriptCaller::findScriptOrdinal(const wchar_t* scriptName, HTREEITEM node, 
 
         item.hItem = itemNode;
         if (TreeView_GetItem(m_navigatorTreeViewHandle, &item)) {
-            msg.str(L"");
-            msg << L"GetItem: text = " << item.pszText
-                << L", nChildren = " << item.cChildren
-                << L", lParam = " << item.lParam
-                << L", i = " << i
-                << L", count = " << count
-                << L", ordinal = " << count + ordinal - 1;
+            if (isDebug(1)) {
+                std::wstringstream msg;
 
-            OutputDebugStringW(msg.str().c_str());
+                msg.str(L"");
+                msg << L"GetItem: text = " << item.pszText
+                    << L", nChildren = " << item.cChildren
+                    << L", lParam = " << item.lParam
+                    << L", i = " << i
+                    << L", count = " << count
+                    << L", ordinal = " << count + ordinal - 1;
+
+                OutputDebugStringW(msg.str().c_str());
+            }
 
             if (item.cChildren > 0) {
                 HTREEITEM childNode = TreeView_GetChild(m_navigatorTreeViewHandle, itemNode);
