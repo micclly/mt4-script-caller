@@ -1,2 +1,2 @@
 /Include/ScriptCaller.class.mqh
-/Script/ScriptCallerTest.mq4
+/Indicators/ScriptCallerTest.mq4
