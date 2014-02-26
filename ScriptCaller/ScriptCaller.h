@@ -1,5 +1,7 @@
 #pragma once
 
+#include <CommCtrl.h>
+
 // --------------------------------------------------
 // class definition
 
@@ -21,4 +23,6 @@ private:
 
     HWND getRootWindowHandle();
     HWND findNavigatorTreeView();
+    int findScriptOrdinal(const wchar_t* scriptName);
+    bool findScriptOrdinal(const wchar_t* scriptName, HTREEITEM node, int& ordinal);
 };
