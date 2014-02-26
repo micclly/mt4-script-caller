@@ -1,4 +1,6 @@
 /Include/ScriptCaller.class.mqh
 /Indicators/ScriptCallerTest.mq4
+/Indicators/ScriptCallerTest_CloseConfigDialog.mq4
 /Libraries/ScriptCaller.dll
 /Scripts/SendMailTest.mq4
+/Scripts/SendMailTestWithInput.mq4

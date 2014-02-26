@@ -11,11 +11,13 @@ public:
     ScriptCaller(HWND chartWindowHandle);
     void setDebugLevel(int level);
     bool callScript(const wchar_t* scriptName);
+    bool callScript(const wchar_t* scriptName, bool closeConfigDialog);
 
 private:
     static const wchar_t* NAVIGATOR_WINDOW_CLASS_NAME;
     static const wchar_t* MT4_INTERNAL_MESSAGE;
     static const UINT MT4_WPARAM_START_SCRIPT;
+    static const int CLOSE_CONFIG_DIALOG_SLEEP_INTERVAL;
 
     int m_debugLevel;
 

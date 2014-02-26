@@ -25,6 +25,12 @@ SCRIPTCALLER_API BOOL ScriptCaller_callScript(long classHandle, const wchar_t* s
     return cast(classHandle)->callScript(scriptName);
 }
 
+SCRIPTCALLER_API BOOL ScriptCaller_callScript2(long classHandle, const wchar_t* scriptName, BOOL closeConfigDialog)
+{
+    bool close = closeConfigDialog ? true : false;
+    return cast(classHandle)->callScript(scriptName, close);
+}
+
 SCRIPTCALLER_API void ScriptCaller_destroy(long classHandle)
 {
     delete cast(classHandle);

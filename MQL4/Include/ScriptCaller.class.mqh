@@ -5,6 +5,7 @@
 #import "ScriptCaller.dll"
     int ScriptCaller_create(int chartWindowHandle);
     int ScriptCaller_callScript(int classHandle, string scriptName);
+    int ScriptCaller_callScript2(int classHandle, string scriptName, bool closeConfigDialog);
     int ScriptCaller_destroy(int classHandle);
 #import
 
@@ -18,6 +19,7 @@ public:
     virtual ~ScriptCaller();
 
     bool callScript(string scriptName);
+    bool callScript(string scriptName, bool closeConfigDialog);
 
 private:
     int m_handle;
@@ -42,6 +44,11 @@ ScriptCaller::~ScriptCaller()
 bool ScriptCaller::callScript(string scriptName)
 {
     return ScriptCaller_callScript(m_handle, scriptName);
+}
+
+bool ScriptCaller::callScript(string scriptName, bool closeConfigDialog)
+{
+    return ScriptCaller_callScript2(m_handle, scriptName, closeConfigDialog);
 }
 
 // --------------------------------------------------

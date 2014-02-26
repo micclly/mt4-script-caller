@@ -40,12 +40,28 @@ bool ScriptCaller::callScript(const wchar_t* scriptName)
     return true;
 }
 
+bool ScriptCaller::callScript(const wchar_t* scriptName, bool closeConfigDialog)
+{
+    if (!callScript(scriptName)) {
+        return false;
+    }
+
+    if (closeConfigDialog) {
+        Sleep(CLOSE_CONFIG_DIALOG_SLEEP_INTERVAL);
+
+        keybd_event(VK_RETURN, 0, 0, 0);
+    }
+
+    return true;
+}
+
 // --------------------------------------------------
 // private members
 
 const wchar_t* ScriptCaller::NAVIGATOR_WINDOW_CLASS_NAME = L"SysTreeView32";
 const wchar_t* ScriptCaller::MT4_INTERNAL_MESSAGE = L"MetaTrader4_Internal_Message";
 const UINT ScriptCaller::MT4_WPARAM_START_SCRIPT = 0x11;
+const int ScriptCaller::CLOSE_CONFIG_DIALOG_SLEEP_INTERVAL = 100;
 
 bool ScriptCaller::isDebug(int level)
 {
