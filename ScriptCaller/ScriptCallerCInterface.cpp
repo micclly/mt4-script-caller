@@ -5,22 +5,22 @@
 // --------------------------------------------------
 // C interfaces
 
-static ScriptCaller* cast(int handle)
+static ScriptCaller* cast(long classHandle)
 {
-    return reinterpret_cast<ScriptCaller*>(handle);
+    return reinterpret_cast<ScriptCaller*>(classHandle);
 }
 
-SCRIPTCALLER_API long ScriptCaller_create()
+SCRIPTCALLER_API long ScriptCaller_create(HWND chartWindowHandle)
 {
-    return reinterpret_cast<long>(new ScriptCaller());
+    return reinterpret_cast<long>(new ScriptCaller(chartWindowHandle));
 }
 
-SCRIPTCALLER_API BOOL ScriptCaller_callScript(int handle, const wchar_t* scriptName)
+SCRIPTCALLER_API BOOL ScriptCaller_callScript(long classHandle, const wchar_t* scriptName)
 {
-    return cast(handle)->callScript(scriptName);
+    return cast(classHandle)->callScript(scriptName);
 }
 
-SCRIPTCALLER_API void ScriptCaller_destroy(long handle)
+SCRIPTCALLER_API void ScriptCaller_destroy(long classHandle)
 {
-    delete reinterpret_cast<ScriptCaller*>(handle);
+    delete cast(classHandle);
 }

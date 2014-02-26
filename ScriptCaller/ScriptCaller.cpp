@@ -4,7 +4,9 @@
 // --------------------------------------------------
 // public members
 
-ScriptCaller::ScriptCaller()
+ScriptCaller::ScriptCaller(HWND chartWindowHandle)
+: m_chartWindowHandle(chartWindowHandle),
+    m_treeViewHandle(NULL)
 {
 
 }

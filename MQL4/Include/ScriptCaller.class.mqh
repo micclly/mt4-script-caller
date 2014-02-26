@@ -3,9 +3,9 @@
 #property strict
 
 #import "ScriptCaller.dll"
-    int ScriptCaller_create();
-    int ScriptCaller_callScript(int handle, string scriptName);
-    int ScriptCaller_destroy(int handle);
+    int ScriptCaller_create(int chartWindowHandle);
+    int ScriptCaller_callScript(int classHandle, string scriptName);
+    int ScriptCaller_destroy(int classHandle);
 #import
 
 // --------------------------------------------------
@@ -29,7 +29,7 @@ private:
 ScriptCaller::ScriptCaller()
 : m_handle(0)
 {
-    m_handle = ScriptCaller_create();
+    m_handle = ScriptCaller_create(WindowHandle(_Symbol, _Period));
 }
 
 ScriptCaller::~ScriptCaller()
