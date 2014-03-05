@@ -9,7 +9,7 @@ This library enables script calling from indicators and expert advisors.
 Installation
 --------------
 
-1. Copy ``MQL4\Library\ScriptCaller.dll`` to ``<MT4_DATA_FOLDER>\MQL4\Library\``
+1. Copy ``MQL4\Libraries\ScriptCaller.dll`` to ``<MT4_DATA_FOLDER>\MQL4\Libraries\``
 1. Copy ``MQL4\Include\ScriptCaller.class.mqh`` to ``<MT4_DATA_FOLDER>\MQL4\Include\``
 
 How to
